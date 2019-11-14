@@ -1,0 +1,88 @@
+<head>
+    <style>
+        body{
+            background: rgb(92,92,92);
+            background: linear-gradient(180deg, rgba(92,92,92,1) 0%, rgba(62,62,85,1) 48%, rgba(37,37,37,1) 100%);color: #e4e4e4;
+            overflow: hidden;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="name vaporwave-font">
+        Christian Burke
+    </h1>
+    <h3 class="about-me vaporwave-font">
+        A software professional with 4 years of experience living in the San Francisco Bay Area
+    </h3>
+    <div>
+
+    </div>
+</body>
+<footer>
+    <style>
+        .vaporwave-font{
+            color: rgb(238, 140, 156);
+            font-family: courier monospace;
+            font-style: italic;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+        .name {
+            text-shadow:
+                1px 1px 0 rgb(66, 218, 218);
+        }
+        .about-me {
+            text-shadow:
+                .5px .5px 0 rgb(66, 218, 218);
+        }
+        @keyframes fall {
+            from {top: 0%;}
+            to {top: 1200px;}
+        }
+        .drop-tail {
+            width: 1px;
+            opacity: .7;
+            bottom: 100%;
+            /* background-color: white; */
+            position: absolute;
+        }
+        .raindrop {
+            position:absolute;
+            width: 1px;
+            height: 1px;
+            animation: fall 1s linear;
+        }
+        .raindrop-color {
+            background-color: #959595;
+        }
+    </style>
+    <script>
+            let createDrop = function() {
+                let drop = document.createElement("div");
+                drop.className = "raindrop raindrop-color";
+                let offset = Math.random();
+                // console.log("generated ", offset);
+                drop.style.setProperty('left', `${offset*100}%`);
+                drop.addEventListener("animationend", (e) => {
+                    e.target.remove();
+                });
+                return drop;
+            }
+            let createTail = function() {
+                let tail = document.createElement("div");
+                tail.className = "drop-tail raindrop-color";
+                let height = Math.random();
+                tail.style.setProperty('height', `10px`);
+                return tail;
+            }
+            let createRaindrop = function(){
+                let drop = createDrop();
+                let tail = createTail();
+                drop.appendChild(tail);
+                document.querySelector('body').appendChild(drop);
+            }
+            window.setInterval(createRaindrop, 20);
+            // createRaindrop();
+        </script>
+</footer>
