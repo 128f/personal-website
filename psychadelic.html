@@ -1,0 +1,112 @@
+<head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <script src="lsystems.js"></script>
+        <style>
+            body{
+                background: rgb(92,92,92);
+                background: linear-gradient(180deg, rgba(92,92,92,1) 0%, rgba(62,62,85,1) 48%, rgba(37,37,37,1) 100%);color: #e4e4e4;
+                overflow: hidden;
+                height: 100%;
+            }
+            #canvas {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+    </body>
+    <footer>
+        <style>
+            .vaporwave-font{
+                color: rgb(238, 140, 156);
+                font-family: courier monospace;
+                font-style: italic;
+                font-weight: bold;
+                letter-spacing: 5px;
+            }
+            .name {
+                font-size: 2em;
+                padding-bottom: 1em;
+                text-shadow:
+                    2.4px 2.4px 0 rgb(66, 218, 218);
+            }
+            .about-me {
+                font-size: 1.2em;
+                text-shadow:
+                    1.5px 1.5px 0 rgb(66, 218, 218);
+                font-weight: normal;
+            }
+            @keyframes fall {
+                from {top: 0%;}
+                to {top: 2400px;}
+            }
+            .drop-tail {
+                width: 1px;
+                opacity: .7;
+                bottom: 100%;
+                /* background-color: white; */
+                position: absolute;
+            }
+            .raindrop {
+                position:absolute;
+                width: 1px;
+                height: 1px;
+                animation: fall 2s linear;
+            }
+            .raindrop-color {
+                background-color: #959595;
+            }
+        </style>
+        <script>
+            const dpiFix = (canvas,ctx) => {
+                let dpi = window.devicePixelRatio;
+                let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+                let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+                canvas.setAttribute('height', style_height * dpi);
+                canvas.setAttribute('width', style_width * dpi);
+            }
+    
+            const randomColor = () => 
+                `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, .2)`;
+    
+            document.addEventListener("DOMContentLoaded", function(){
+    
+                let canv = document.getElementById("canvas");
+                let ctx  = canv.getContext('2d');
+                ctx.lineWidth = 500;
+    
+                dpiFix(canv, ctx);
+    
+                let system = (new lsystems.Generator).dragonCurve();
+                system.stepn(8);
+    
+                newRenderConfig = () => ({
+                    locX: Math.random()*canv.width,
+                    locY: Math.random()*canv.height,
+                    canvasContext: ctx,
+                    stepLength: Math.random()*50 + 50,
+                    renderWindow: 1,
+                    orientation: parseInt(Math.random()*4),
+                    instructions: system.instructions,
+                    color: randomColor(),
+                });
+
+                const makeOnCompleteCallback = (interval) =>
+                    () => window.clearInterval(interval);
+    
+                window.setInterval(() => {
+                    let renderer = new lsystems.TraceRenderer(newRenderConfig());
+                    let interval = window.setInterval(() => {
+                        renderer.renderOnce();
+                    }, 40)
+                    renderer.onComplete = makeOnCompleteCallback(interval);
+                }, 250)
+    
+            });
+        </script>
+    </footer>
