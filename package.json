@@ -25,6 +25,6 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "l-systems": "file:../LSystems"
+    "l-systems": "^2.0.0"
   }
 }
