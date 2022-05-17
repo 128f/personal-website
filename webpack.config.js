@@ -1,5 +1,6 @@
 const path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -13,6 +14,11 @@ module.exports = {
             hash: true,
             filename: './index.html',
             template: './src/index.html'
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'static' }
+            ]
         })
     ],
     module: {
@@ -24,6 +30,6 @@ module.exports = {
                     presets: ['@babel/preset-env']
                 }
             }
-        }],
+        }]
     }
 };
