@@ -9,6 +9,10 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    resolve: {
+        // Add `.ts` and `.tsx` as a resolvable extension.
+        extensions: [".ts", ".tsx", ".js"]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
@@ -27,8 +31,13 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@babel/preset-env']
+                    presets: ['@babel/preset-env', '@babel/preset-react']
                 }
+            }
+        }, {
+            test: /\.(ts|tsx)$/,
+            use: {
+                loader: 'ts-loader'
             }
         }]
     }

@@ -2,6 +2,13 @@ import { createRaindrop } from './rain';
 import { spawnCanvas, newRenderConfig, randomInstructions } from './lsystems';
 import { TraceRenderer } from 'l-systems';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+const root = document.getElementById('react-root');
+ReactDOM.render(<App />, root);
+
 document.addEventListener("DOMContentLoaded", function(){
     render();
 });
