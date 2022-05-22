@@ -3,12 +3,12 @@ import { useState } from "react";
 import {createUseStyles} from 'react-jss';
 import Draggable from "react-draggable"
 
-const useWindowStyles = createUseStyles({
+const useWindowStyles = (width: number, height: number) => createUseStyles({
   window: {
     padding: "0px",
     margin: "0px",
-    width: '328px',
-    height: '328px',
+    width: `${width + 8}px`,
+    height: `${height + 8}px`,
     boxSizing: 'border-box',
   },
   titleBar: {
@@ -21,8 +21,8 @@ const useWindowStyles = createUseStyles({
     justifyContent: 'space-between',
   },
   windowBody: {
-    width: '320px',
-    height: '320px',
+    width: `${width}px`,
+    height: `${height}px`,
     border: 'ridge 4px #e3e3e3',
     borderTop: '0px',
   },
@@ -33,10 +33,15 @@ const useWindowStyles = createUseStyles({
   },
 });
 
-function ChessWindow(props: {
-  closeWindow: () => void
+function Window(props: {
+  closeWindow: () => void,
+  dimension: {
+    w: number,
+    h: number,
+  },
+  src: string,
 }) {
-  const classes = useWindowStyles();
+  const classes = useWindowStyles(props.dimension.w, props.dimension.h)();
   return (
     <Draggable
       axis="both"
@@ -54,7 +59,7 @@ function ChessWindow(props: {
           <div className={classes.title}>Chess</div>
           <div onClick={props.closeWindow} className={classes.closeButton}>X</div>
         </div>
-        <iframe className={classes.windowBody} src="https://cburke.me/chess" />
+        <iframe className={classes.windowBody} src={props.src} />
       </div>
     </Draggable>
   );
@@ -62,24 +67,46 @@ function ChessWindow(props: {
 
 const useMainStyles = createUseStyles({
   icon: {
-    width: "50px",
-    height: "50px",
+    width: "200px",
+    height: "200px",
     cursor: "pointer",
+    margin: "5px",
     '& img': {
       width: "100%",
     }
+  },
+  windowSpawner: {
+    position: 'absolute',
+    width: "0px"
   }
 });
 
 function App() {
   const [isChessOpen, setIsChessOpen] = useState(false);
+  const [isPokerOpen, setIsPokerOpen] = useState(false);
   const classes = useMainStyles();
   return (
     <div>
-      <div className={classes.icon}>
-        <img onClick={() => setIsChessOpen(true)} src="./chesshorse.png" />
+      <div className={classes.windowSpawner}>
+        {isChessOpen && <Window
+          closeWindow={()=>setIsChessOpen(false)}
+          dimension={{w: 320, h: 320}}
+          src="https://cburke.me/chess/index.html"
+        />
+        }
+        {isPokerOpen && <Window
+          closeWindow={()=>setIsPokerOpen(false)}
+          dimension={{w: 500, h: 200}}
+          src="https://cburke.me/poker/index.html"
+        />}
       </div>
-      {isChessOpen && <ChessWindow closeWindow={()=>setIsChessOpen(false)} />}
+
+      <div className={classes.icon}>
+        <img onClick={() => setIsChessOpen(true)} src="./chess.png" />
+      </div>
+      <div className={classes.icon}>
+        <img onClick={() => setIsPokerOpen(true)} src="./card.png" />
+      </div>
     </div>
   );
 }
