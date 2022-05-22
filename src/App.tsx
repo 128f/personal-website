@@ -34,6 +34,7 @@ const useWindowStyles = (width: number, height: number) => createUseStyles({
 });
 
 function Window(props: {
+  title: string,
   closeWindow: () => void,
   dimension: {
     w: number,
@@ -56,7 +57,7 @@ function Window(props: {
     >
       <div className={classes.window}>
         <div className={"titleBar " + classes.titleBar}>
-          <div className={classes.title}>Chess</div>
+          <div className={classes.title}>{props.title}</div>
           <div onClick={props.closeWindow} className={classes.closeButton}>X</div>
         </div>
         <iframe className={classes.windowBody} src={props.src} />
@@ -89,12 +90,14 @@ function App() {
     <div>
       <div className={classes.windowSpawner}>
         {isChessOpen && <Window
+          title="Chess"
           closeWindow={()=>setIsChessOpen(false)}
           dimension={{w: 320, h: 320}}
           src="https://cburke.me/chess/index.html"
         />
         }
         {isPokerOpen && <Window
+          title="Video Poker"
           closeWindow={()=>setIsPokerOpen(false)}
           dimension={{w: 500, h: 200}}
           src="https://cburke.me/poker/index.html"
