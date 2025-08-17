@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import {createUseStyles} from 'react-jss';
+import { createUseStyles } from 'react-jss';
 import Draggable from "react-draggable"
 
 const useWindowStyles = (width: number, height: number) => createUseStyles({
@@ -47,7 +47,7 @@ function Window(props: {
     <Draggable
       axis="both"
       handle=".titleBar"
-      defaultPosition={{x: 0, y: 0}}
+      defaultPosition={{ x: 0, y: 0 }}
       position={null}
       grid={[5, 5]}
       scale={1}
@@ -68,13 +68,19 @@ function Window(props: {
 
 const useMainStyles = createUseStyles({
   icon: {
-    width: "200px",
-    height: "200px",
+    width: "80px",
+    height: "80px",
     cursor: "pointer",
     margin: "5px",
+    display: "inline-block",
     '& img': {
       width: "100%",
     }
+  },
+  iconsContainer: {
+    display: "flex",
+    gap: "10px",
+    alignItems: "center"
   },
   windowSpawner: {
     position: 'absolute',
@@ -91,24 +97,26 @@ function App() {
       <div className={classes.windowSpawner}>
         {isChessOpen && <Window
           title="Chess"
-          closeWindow={()=>setIsChessOpen(false)}
-          dimension={{w: 320, h: 320}}
+          closeWindow={() => setIsChessOpen(false)}
+          dimension={{ w: 320, h: 320 }}
           src="https://cburke.me/chess/index.html"
         />
         }
         {isPokerOpen && <Window
           title="Video Poker"
-          closeWindow={()=>setIsPokerOpen(false)}
-          dimension={{w: 500, h: 200}}
+          closeWindow={() => setIsPokerOpen(false)}
+          dimension={{ w: 500, h: 200 }}
           src="https://cburke.me/poker/index.html"
         />}
       </div>
 
-      <div className={classes.icon}>
-        <img onClick={() => setIsChessOpen(true)} src="./chess.png" />
-      </div>
-      <div className={classes.icon}>
-        <img onClick={() => setIsPokerOpen(true)} src="./card.png" />
+      <div className={classes.iconsContainer}>
+        <div className={classes.icon}>
+          <img onClick={() => setIsChessOpen(true)} src="./chess.png" />
+        </div>
+        <div className={classes.icon}>
+          <img onClick={() => setIsPokerOpen(true)} src="./card.png" />
+        </div>
       </div>
     </div>
   );
